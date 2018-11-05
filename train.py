@@ -19,12 +19,18 @@ args = parser.parse_args()
 class ModelTrainer():
     def __init__(self):
 
+        self.batch_size = 100
+        self.num_epochs = 10
+
         datapath = args.data
         self.databunch = TextClasDataBunch.from_csv(datapath)
-        self.train_dataloader = databunch.train_dl
-        self.valid_dataloader = databunch.valid_dl
+        self.train_dataloader = self.databunch.train_dl
+        self.train_dataloader.batch_size = self.batch_size
+        self.train_dataloader.shuffle = True
+        self.valid_dataloader = self.databunch.valid_dl
 
 
 
     def train():
-	pass
+        for batch_idx, (x,y) in enumerate(self.train_dataloader):
+            import pdb; pdb.set_trace()
