@@ -67,9 +67,7 @@ testpath==0.4.2
 thinc==6.12.0
 toolz==0.9.0
 torch==0.4.1
-torch-nightly==1.0.0.dev20181028
 torchvision==0.2.1
-torchvision-nightly==0.2.1
 tornado==5.1.1
 tqdm==4.28.1
 traitlets==4.3.2
