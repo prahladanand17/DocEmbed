@@ -23,7 +23,7 @@ class ModelTrainer():
         self.num_epochs = 10
 
         datapath = args.data
-        self.databunch = TextClasDataBunch.from_csv(datapath)
+        self.databunch = TextClasDataBunch.from_csv(datapath, bs = 100)
         self.train_dataloader = self.databunch.train_dl
         import pdb; pdb.set_trace()
         self.train_dataloader.batch_size = self.batch_size
@@ -31,8 +31,6 @@ class ModelTrainer():
         self.valid_dataloader = self.databunch.valid_dl
 
 
-
-    def train(self):
 
 if __name__ == "__main__":
      LSTM = ModelTrainer()
