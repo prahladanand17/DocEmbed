@@ -19,11 +19,11 @@ args = parser.parse_args()
 class ModelTrainer():
     def __init__(self):
 
-        self.batch_size = 100
+        self.batch_size = 200
         self.num_epochs = 10
 
         datapath = args.data
-        self.databunch = TextClasDataBunch.from_csv(datapath, bs = 100)
+        self.databunch = TextClasDataBunch.from_csv(datapath, bs = self.batch_size)
         self.train_dataloader = self.databunch.train_dl
         import pdb; pdb.set_trace()
         self.train_dataloader.batch_size = self.batch_size
