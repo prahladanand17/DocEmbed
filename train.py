@@ -25,9 +25,6 @@ class ModelTrainer():
         datapath = args.data
         self.databunch = TextClasDataBunch.from_csv(datapath, bs = self.batch_size)
         self.train_dataloader = self.databunch.train_dl
-        import pdb; pdb.set_trace()
-        self.train_dataloader.batch_size = self.batch_size
-        self.train_dataloader.shuffle = True
         self.valid_dataloader = self.databunch.valid_dl
     def train(self):
         for batch_idx, (data,target) in enumerate(self.train_dataloader):
