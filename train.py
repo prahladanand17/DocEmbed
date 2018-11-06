@@ -18,9 +18,11 @@ args = parser.parse_args()
 
 class ModelTrainer():
     def __init__(self):
+        cuda_device = torch.device('cuda')
 
         self.batch_size = 200
         self.num_epochs = 10
+
 
         datapath = args.data
         self.databunch = TextClasDataBunch.from_csv(datapath, bs = self.batch_size)
