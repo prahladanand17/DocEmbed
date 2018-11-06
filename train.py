@@ -26,6 +26,7 @@ class ModelTrainer():
         self.databunch = TextClasDataBunch.from_csv(datapath, bs = self.batch_size)
         self.train_dataloader = self.databunch.train_dl
         self.valid_dataloader = self.databunch.valid_dl
+        print torch.cuda.is_available()
     def train(self):
         for batch_idx, (data,target) in enumerate(self.train_dataloader):
             import pdb; pdb.set_trace()
