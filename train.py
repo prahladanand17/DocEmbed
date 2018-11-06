@@ -31,6 +31,7 @@ class ModelTrainer():
 
 
 
-    def train():
-        for batch_idx, (x,y) in enumerate(self.train_dataloader):
-            import pdb; pdb.set_trace()
+    def train(self):
+
+if __name__ == "__main__":
+     LSTM = ModelTrainer()
