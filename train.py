@@ -29,8 +29,12 @@ class ModelTrainer():
         self.train_dataloader.batch_size = self.batch_size
         self.train_dataloader.shuffle = True
         self.valid_dataloader = self.databunch.valid_dl
+    def train(self):
+        for batch_idx, (data,target) in enumerate(self.train_dataloader):
+            import pdb; pdb.set_trace()
 
 
 
 if __name__ == "__main__":
      LSTM = ModelTrainer()
+     LSTM.train()
