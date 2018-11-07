@@ -19,7 +19,8 @@ args = parser.parse_args()
 class ModelTrainer():
     def __init__(self):
         #Build dataloaders, vocabulary, and numericalize texts
-        self.databunch = TextClasDataBunch.from_csv(args.data, bs = self.batch_size)
+
+        self.databunch = TextClasDataBunch.from_csv(args.data, bs = 200)
 
 
         '''
@@ -35,12 +36,13 @@ class ModelTrainer():
         idx_to_word = self.databunch.vocab.itos
         word_to_idx = build_word_to_idx(idx_to_word)
 
+        import pdb; pdb.set_trace()
+
 
         self.train_dataloader = self.databunch.train_dl
         self.valid_dataloader = self.databunch.valid_dl
     def train(self):
-        for batch_idx, (data,target) in enumerate(self.train_dataloader):
-            import pdb; pdb.set_trace()
+        pass
 
 
 
