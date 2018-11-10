@@ -13,7 +13,7 @@ class LSTM(nn.Module):
         super(LSTM,self).__init__()
         #load pretrained gloVe embeddings
 
-        word_embeds = load(glove_path)
+        word_embeds = load_glove(glove_path)
         embeddings = np.zeros((vocab_size, embedding_size))
         for word in word_embeds.keys():
             index = word_to_idx[word]
@@ -33,3 +33,14 @@ class LSTM(nn.Module):
     def forward(self, input):
         word_embeddings = self.word_embeddings(input)
         import pdb; pdb.set_trace()
+
+    def load_glove(self, fpath):
+        words = {}
+        with open(fpath, 'r') as fr:
+            for line in fr:
+                line = line.rstrip("\n")
+                sp = line.split(" ")
+                emb = [float(sp[i]) for i in range(1, len(sp))]
+                assert len(emb) == 300
+                words[sp[0]] = np.array(emb, dtype=np.float32)
+        return words
