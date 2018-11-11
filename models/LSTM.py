@@ -34,9 +34,13 @@ class LSTM(nn.Module):
             nn.Dropout(p=0.5),
             nn.Linear(50,20)
         )
+
     def forward(self, input):
         word_embeddings = self.word_embeddings(input)
         import pdb; pdb.set_trace()
+        document_embed, _ = self.doc_LSTM(word_embeddings)
+        output = self.classifier(document_embed)
+        output = F.softmax(output)
 
     def load_glove(self, fpath):
         words = {}
