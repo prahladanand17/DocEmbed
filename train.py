@@ -50,7 +50,7 @@ class ModelTrainer():
 
     def train(self):
         self.model.train()
-	print (torch.cuda.get_device_name(torch.cuda.current_device()))
+	    print (torch.cuda.get_device_name(torch.cuda.current_device()))
         for e in range(self.epochs):
             num_correct = 0
             for batch_idx, (data, target) in enumerate(self.train_dataloader):
