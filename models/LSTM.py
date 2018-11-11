@@ -17,10 +17,13 @@ class LSTM(nn.Module):
         word_embeds = self.load_glove(glove_path)
         embeddings = torch.randn((vocab_size, embedding_dim))
         for word in word_embeds.keys():
-            index = word_to_idx[word]
-            embeddings[index] = word_embeds[word]
+            try:
+                index = word_to_idx[word]
+                embeddings[index] = word_embeds[word]
+            except:
+                pass
         self.word_embeddings = nn.Embedding(vocab_size, embedding_size).cuda()
-        self.word_embeddings.weight.data.copy_(torch.from_numpy(embeddings))
+        self.word_embeddings.weight.data.copy_((embeddings))
 
 
         self.embeds = nn.Embedding(vocab_size, embedding_dim)
