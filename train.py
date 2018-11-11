@@ -14,7 +14,7 @@ from models.LSTM import LSTM
 parser = argparse.ArgumentParser()
 parser.add_argument('--data', type=str, help='path to csv file with data')
 parser.add_argument('--embedding', type=str, help='path to gloVe file with pretrained embeddings')
-parser.add_argument('--model_state' type=strt, help='path to director with saved model states')
+parser.add_argument('--model_state', type=str, help='path to director with saved model states')
 args = parser.parse_args()
 
 
@@ -22,7 +22,7 @@ args = parser.parse_args()
 class ModelTrainer():
     def __init__(self):
         #Build dataloaders, vocabulary, and numericalize texts
-        self.databunch = TextClasDataBunch.from_csv(args.data, bs = 200)
+        self.databunch = TextClasDataBunch.from_csv(args.data, bs = 100)
 
 
         '''
@@ -50,7 +50,8 @@ class ModelTrainer():
 
     def train(self):
         self.model.train()
-        for e in self.epochs:
+	print (torch.cuda.get_device_name(torch.cuda.current_device()))
+        for e in range(self.epochs):
             num_correct = 0
             for batch_idx, (data, target) in enumerate(self.train_dataloader):
 

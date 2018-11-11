@@ -22,18 +22,15 @@ class LSTM(nn.Module):
                 embeddings[index] = word_embeds[word]
             except:
                 pass
-        self.word_embeddings = nn.Embedding(vocab_size, embedding_size).cuda()
+        self.word_embeddings = nn.Embedding(vocab_size, embedding_dim).cuda()
         self.word_embeddings.weight.data.copy_((embeddings))
-
-
-        self.embeds = nn.Embedding(vocab_size, embedding_dim)
         self.doc_LSTM = nn.LSTM(embedding_dim, hidden_size, 1, batch_first = True).cuda()
         self.classifier = nn.Sequential(
             nn.Linear(hidden_size, 50),
-            nn.ReLu(),
+            nn.ReLU(),
             nn.Dropout(p=0.5),
             nn.Linear(50,20)
-        )
+        ).cuda()
 
     def forward(self, input):
         word_embeddings = self.word_embeddings(input)
