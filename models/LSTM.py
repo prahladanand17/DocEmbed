@@ -22,22 +22,23 @@ class LSTM(nn.Module):
                 embeddings[index] = word_embeds[word]
             except:
                 pass
-        self.word_embeddings = nn.Embedding(vocab_size, embedding_dim).cuda()
+        self.word_embeddings = nn.Embedding(vocab_size, embedding_dim)
         self.word_embeddings.weight.data.copy_((embeddings))
-        self.doc_LSTM = nn.LSTM(embedding_dim, hidden_size, 1, batch_first = True).cuda()
+        self.doc_LSTM = nn.LSTM(embedding_dim, hidden_size, 1, batch_first = False)
         self.classifier = nn.Sequential(
             nn.Linear(hidden_size, 50),
             nn.ReLU(),
             nn.Dropout(p=0.5),
             nn.Linear(50,20)
-        ).cuda()
+        )
 
     def forward(self, input):
         word_embeddings = self.word_embeddings(input)
-        import pdb; pdb.set_trace()
-        document_embed, _ = self.doc_LSTM(word_embeddings)
-        output = self.classifier(document_embed)
-        output = F.softmax(output)
+        hidden_features, _ = self.doc_LSTM(word_embeddings)
+        doc_embeds = hidden_features.sum(0) / hidden_features.shape[0]
+        output = self.classifier(doc_embeds)
+        output = F.softmax(output, dim=0)
+        return output
 
     def load_glove(self, fpath):
         words = {}

@@ -22,7 +22,7 @@ args = parser.parse_args()
 class ModelTrainer():
     def __init__(self):
         #Build dataloaders, vocabulary, and numericalize texts
-        self.databunch = TextClasDataBunch.from_csv(args.data, bs = 100)
+        self.databunch = TextClasDataBunch.from_csv(args.data, bs = 10)
 
 
         '''
@@ -38,7 +38,10 @@ class ModelTrainer():
         idx_to_word = self.databunch.vocab.itos
         word_to_idx = build_word_to_idx(idx_to_word)
 
-        self.model = LSTM(vocab_size = len(idx_to_word), embedding_dim = 300, hidden_size = 20, word_to_idx = word_to_idx, glove_path = args.embedding)
+        self.model = LSTM(vocab_size = len(idx_to_word), embedding_dim = 300, hidden_size = 300, word_to_idx = word_to_idx, glove_path = args.embedding)
+      #  self.model = nn.DataParallel(self.model)
+        self.device = torch.device("cuda:0")
+        self.model.to(self.device)
 
         self.train_dataloader = self.databunch.train_dl
         self.valid_dataloader = self.databunch.valid_dl
@@ -50,7 +53,6 @@ class ModelTrainer():
 
     def train(self):
         self.model.train()
-        print (torch.cuda.get_device_name(torch.cuda.current_device()))
         for e in range(self.epochs):
             num_correct = 0
             for batch_idx, (data, target) in enumerate(self.train_dataloader):
@@ -63,22 +65,22 @@ class ModelTrainer():
                 self.optimizer.zero_grad()
 
                 #Forward, backward, and step of optimizer
-                output = self.model.forward(data)
-                loss = self.loss_function(output, target)
+                result = self.model.forward(data)
+                loss = self.loss_function(result, target)
                 loss.backward()
                 self.optimizer.step()
 
                 #Calculate predicted output
-                value, index = torch.max(output.data, 1)
-                for i in range(0, 50):
+                value, index = torch.max(result.data, 1)
+                for i in range(0, 5):
                     if index[i] == target.data[i]:
                         num_correct += 1
 
                 #Print model statistics
-                print ('Epoch: ' + str(e + 1) + "\t" + "Progress: " + str(((batch_idx + 1) * 50)) + " / " +  str(len(self.train_data_loader.dataset)) + "\t" + "Loss: " + str(loss.item()))
+                print ('Epoch: ' + str(e + 1) + "\t" + "Progress: " + str(((batch_idx + 1) * 5)) + " / " +  str(len(self.train_dataloader.dataset)) + "\t" + "Loss: " + str(loss.item()))
 
                 #Save model state for ease of access/training later
-                torch.save(self.model.state_dict(), args.model_state + "checkpoint.pth.tar")
+                torch.save(self.model.state_dict(), args.model_state + "/checkpoint.pth.tar")
 
             print ("Total Correct:" + num_correct)
             print ("Accuracy: " + num_correct + "/" + len(self.train_dataloader))

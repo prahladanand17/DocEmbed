@@ -16,9 +16,9 @@ def build_dataset(source_dir, train):
     idx_to_label = {}
     i = 0
     for c in categories:
+        print (i)
         label_to_idx[c] = i
         idx_to_label[i] = c
-        i += 1
         folder_path = source_dir + '/' + c
         files = os.listdir(folder_path)
         for f in files:
@@ -26,12 +26,14 @@ def build_dataset(source_dir, train):
             doc = filepath.open('r', encoding='utf8').read()
             texts.append(doc)
             labels.append(i)
+        i += 1
     texts,labels = np.array(texts),np.array(labels)
     df = pd.DataFrame({'text':texts, 'labels':labels}, columns=['labels','text'])
     if train:
-        df.to_csv(path_or_buf='/Users/anprahlad/Developer/DL_F2018/DocEmbed/data/20_news/train.csv', index=False, header=False)
+        df.to_csv(path_or_buf='/homes/anand39/DocEmbed/data/20_news/train.csv', index=False, header=False)
     else:
-        df.to_csv(path_or_buf='/Users/anprahlad/Developer/DL_F2018/DocEmbed/data/20_news/valid.csv', index=False, header=False)
+        df.to_csv(path_or_buf='/homes/anand39/DocEmbed/data/20_news/valid.csv', index=False, header=False)
 
 if __name__ == "__main__":
+    build_dataset('20_news/train', train=True)
     build_dataset('20_news/valid', train=False)
