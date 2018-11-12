@@ -26,7 +26,10 @@ class LSTM(nn.Module):
         self.word_embeddings.weight.data.copy_((embeddings))
         self.doc_LSTM = nn.LSTM(embedding_dim, hidden_size, 1, batch_first = False)
         self.classifier = nn.Sequential(
-            nn.Linear(hidden_size, 50),
+            nn.Linear(hidden_size, 100),
+            nn.ReLU(),
+            nn.Dropout(p=0.5),
+            nn.Linear(100,50),
             nn.ReLU(),
             nn.Dropout(p=0.5),
             nn.Linear(50,20)
