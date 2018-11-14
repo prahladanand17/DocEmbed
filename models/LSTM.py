@@ -17,6 +17,7 @@ class LSTM(nn.Module):
         word_embeds = self.load_glove(glove_path)
         embeddings = torch.randn((vocab_size, embedding_dim))
         for word in word_embeds.keys():
+            import pdb; pdb.set_trace()
             try:
                 index = word_to_idx[word]
                 embeddings[index] = word_embeds[word]
