@@ -22,7 +22,7 @@ args = parser.parse_args()
 class ModelTrainer():
     def __init__(self):
         #Build dataloaders, vocabulary, and numericalize texts
-        self.databunch = TextClasDataBunch.from_csv(args.data, bs = 10)
+        self.databunch = TextClasDataBunch.from_csv(args.data, bs = 10, csv_name='train.csv')
 
 
         '''
@@ -82,8 +82,8 @@ class ModelTrainer():
                 #Save model state for ease of access/training later
                 torch.save(self.model.state_dict(), args.model_state + "/checkpoint.pth.tar")
 
-            print ("Total Correct:" + num_correct)
-            print ("Accuracy: " + num_correct + "/" + len(self.train_dataloader))
+            print ("Total Correct:" + str(num_correct))
+            print ("Accuracy: " + str(num_correct) + "/" + str(len(self.train_dataloader)))
 
 
 

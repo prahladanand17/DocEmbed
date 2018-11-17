@@ -64,6 +64,10 @@ def replace_numbers(words):
             new_words.append(word)
     return new_words
 
+def new_test():
+    import pdb; pdb.set_trace()
+    tensor = torch.randn((2,3,5))
+
 
 def normalize(words):
     words = remove_non_ascii(words)
@@ -75,4 +79,4 @@ def normalize(words):
 
 
 if __name__ == "__main__":
-    test()
+    new_test()

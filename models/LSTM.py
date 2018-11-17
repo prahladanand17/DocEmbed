@@ -17,14 +17,14 @@ class LSTM(nn.Module):
         word_embeds = self.load_glove(glove_path)
         embeddings = torch.randn((vocab_size, embedding_dim))
         for word in word_embeds.keys():
-            import pdb; pdb.set_trace()
             try:
                 index = word_to_idx[word]
-                embeddings[index] = word_embeds[word]
+                embeddings[index] = torch.from_numpy(word_embeds[word])
             except:
                 pass
         self.word_embeddings = nn.Embedding(vocab_size, embedding_dim)
         self.word_embeddings.weight.data.copy_((embeddings))
+        self.word.embeddings.weight.requires_grad=False
         self.doc_LSTM = nn.LSTM(embedding_dim, hidden_size, 1, batch_first = False)
         self.classifier = nn.Sequential(
             nn.Linear(hidden_size, 100),
