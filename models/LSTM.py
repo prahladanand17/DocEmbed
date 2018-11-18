@@ -55,4 +55,4 @@ class LSTM(nn.Module):
                 words[sp[0]] = np.array(emb, dtype=np.float32)
         return words
     def initialize_hidden_state(self):
-        return (torch.zeros(1, 5, self.hidden_size), torch.zeros(1, 5, self.hidden_size))
+        return (torch.zeros(self.doc_LSTM.num_layers, 5, self.hidden_size), torch.zeros(self.doc_LSTM.num_layers, 5, self.hidden_size))
