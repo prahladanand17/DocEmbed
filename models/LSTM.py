@@ -35,10 +35,11 @@ class LSTM(nn.Module):
             nn.Dropout(p=0.5),
             nn.Linear(50,20)
         )
+        self.initial_states = self.initialize_states()
 
     def forward(self, input):
         word_embeddings = self.word_embeddings(input)
-        hidden_features, _ = self.doc_LSTM(word_embeddings)
+        hidden_features, _ = self.doc_LSTM(word_embeddings, self.initial_states)
         doc_embeds = hidden_features.sum(0) / hidden_features.shape[0]
         output = self.classifier(doc_embeds)
         output = F.softmax(output, dim=0)
@@ -54,5 +55,7 @@ class LSTM(nn.Module):
                 assert len(emb) == 300
                 words[sp[0]] = np.array(emb, dtype=np.float32)
         return words
-    def initialize_hidden_state(self):
-        return (torch.zeros(self.doc_LSTM.num_layers, 5, self.hidden_size), torch.zeros(self.doc_LSTM.num_layers, 5, self.hidden_size))
+    def initialize_states(self):
+        #initialize tuple of (h0,c0)
+        return (torch.zeros(self.doc_LSTM.num_layers, 5, self.hidden_size),
+                torch.zeros(self.doc_LSTM.num_layers, 5, self.hidden_size))
