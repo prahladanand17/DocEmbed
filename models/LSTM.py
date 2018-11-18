@@ -54,3 +54,5 @@ class LSTM(nn.Module):
                 assert len(emb) == 300
                 words[sp[0]] = np.array(emb, dtype=np.float32)
         return words
+    def initialize_hidden_state(self):
+        return (torch.zeros(1, 5, self.hidden_size), torch.zeros(1, 5, self.hidden_size))

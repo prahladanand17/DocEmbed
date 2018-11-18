@@ -14,7 +14,7 @@ from models.LSTM import LSTM
 parser = argparse.ArgumentParser()
 parser.add_argument('--data', type=str, help='path to csv file with data')
 parser.add_argument('--embedding', type=str, help='path to gloVe file with pretrained embeddings')
-parser.add_argument('--model_state', type=str, help='path to director with saved model states')
+parser.add_argument('--save', type=str, help='path to director with saved model states')
 args = parser.parse_args()
 
 
@@ -22,7 +22,7 @@ args = parser.parse_args()
 class ModelTrainer():
     def __init__(self):
         #Build dataloaders, vocabulary, and numericalize texts
-        self.databunch = TextClasDataBunch.from_csv(args.data, bs = 6, csv_name='train.csv')
+        self.databunch = TextClasDataBunch.from_csv(args.data, bs = 10, csv_name='train.csv')
 
 
         '''
@@ -39,7 +39,7 @@ class ModelTrainer():
         word_to_idx = build_word_to_idx(idx_to_word)
 
         self.model = LSTM(vocab_size = len(idx_to_word), embedding_dim = 300, hidden_size = 300, word_to_idx = word_to_idx, glove_path = args.embedding)
-      #  self.model = nn.DataParallel(self.model)
+        #self.model = nn.DataParallel(self.model)
         self.device = torch.device("cuda:0")
         self.model.to(self.device)
 
@@ -57,8 +57,11 @@ class ModelTrainer():
             num_correct = 0
             for batch_idx, (data, target) in enumerate(self.train_dataloader):
 
+                #Detach LSTM hidden state from previous sequence
+                self.model.hidden = self.model.initialize_hidden_state()
+
                 #Wrap inputs and targets in Variable
-                data, target = Variable(data).to(self.device), Variable(target).to(self.device)
+                data, target = (Variable(data)).to(self.device), (Variable(target)).to(self.device)
 
 
                 #Zero Gradients for each batch
