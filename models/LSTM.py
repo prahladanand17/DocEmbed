@@ -24,7 +24,7 @@ class LSTM(nn.Module):
                 pass
         self.word_embeddings = nn.Embedding(vocab_size, embedding_dim)
         self.word_embeddings.weight.data.copy_((embeddings))
-        self.word.embeddings.weight.requires_grad=False
+        self.word_embeddings.weight.requires_grad=False
         self.doc_LSTM = nn.LSTM(embedding_dim, hidden_size, 1, batch_first = False)
         self.classifier = nn.Sequential(
             nn.Linear(hidden_size, 100),
