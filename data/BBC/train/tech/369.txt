@@ -2,7 +2,7 @@ Microsoft plans 'safer ID' system
 
 Microsoft is planning to make Windows and Internet Explorer more secure by including software to give people more control over personal information.
 
-"Info cards" will help people manage personal details on their PCs to make online services safer, said Microsoft. Microsoft's two previous programs, Passport and Hailstorm, aimed to protect users but were criticised. ID fraud is one of the UK's fastest-growing crimes, with criminals netting an estimated £1.3bn last year. A quarter of UK adults has either had their ID stolen, via hi-tech or other means, or knows someone who has, a recent report by Which? magazine found.
+"Info cards" will help people manage personal details on their PCs to make online services safer, said Microsoft. Microsoft's two previous programs, Passport and Hailstorm, aimed to protect users but were criticised. ID fraud is one of the UK's fastest-growing crimes, with criminals netting an estimated $1.3bn last year. A quarter of UK adults has either had their ID stolen, via hi-tech or other means, or knows someone who has, a recent report by Which? magazine found.
 
 Microsoft is developing a new version of Internet Explorer browser and its operating system, Windows, which has been code-named Longhorn. Michael Stephenson, director in Microsoft's Windows Server division, would not confirm however whether the new info cards ID system will be built into the current Windows XP version or Longhorn.
 

@@ -25,4 +25,4 @@ def clean_data(data_root):
     print file_count
 
 if __name__ == "__main__":
-    clean_data('20_news/train')
+    clean_data('BBC/valid')

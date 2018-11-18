@@ -1,6 +1,6 @@
 Digital guru floats sub-$100 PC
 
-Nicholas Negroponte, chairman and founder of MIT's Media Labs, says he is developing a laptop PC that will go on sale for less than $100 (£53).
+Nicholas Negroponte, chairman and founder of MIT's Media Labs, says he is developing a laptop PC that will go on sale for less than $100 ($53).
 
 He told the BBC World Service programme Go Digital he hoped it would become an education tool in developing countries. He said one laptop per child could be " very important to the development of not just that child but now the whole family, village and neighbourhood". He said the child could use the laptop like a text book. He described the device as a stripped down laptop, which would run a Linux-based operating system, "We have to get the display down to below $20, to do this we need to rear project the image rather than using an ordinary flat panel.
 

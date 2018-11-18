@@ -30,10 +30,10 @@ def build_dataset(source_dir, train):
     texts,labels = np.array(texts),np.array(labels)
     df = pd.DataFrame({'text':texts, 'labels':labels}, columns=['labels','text'])
     if train:
-        df.to_csv(path_or_buf='/homes/anand39/DocEmbed/data/20_news/train.csv', index=False, header=False)
+        df.to_csv(path_or_buf='/Users/anprahlad/Developer/DL_F2018/DocEmbed/data/BBC/train.csv', index=False, header=False)
     else:
-        df.to_csv(path_or_buf='/homes/anand39/DocEmbed/data/20_news/valid.csv', index=False, header=False)
+        df.to_csv(path_or_buf='/Users/anprahlad/Developer/DL_F2018/DocEmbed/data/BBC/valid.csv', index=False, header=False)
 
 if __name__ == "__main__":
-    build_dataset('20_news/train', train=True)
-    build_dataset('20_news/valid', train=False)
+    build_dataset('BBC/train', train=True)
+    build_dataset('BBC/valid', train=False)

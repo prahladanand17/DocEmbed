@@ -22,7 +22,7 @@ args = parser.parse_args()
 class ModelTrainer():
     def __init__(self):
         #Build dataloaders, vocabulary, and numericalize texts
-        self.databunch = TextClasDataBunch.from_csv(args.data, bs = 10, csv_name='train.csv')
+        self.databunch = TextClasDataBunch.from_csv(args.data, bs = 6, csv_name='train.csv')
 
 
         '''
@@ -58,7 +58,7 @@ class ModelTrainer():
             for batch_idx, (data, target) in enumerate(self.train_dataloader):
 
                 #Wrap inputs and targets in Variable
-                data, target = Variable(data), Variable(target)
+                data, target = Variable(data).to(self.device), Variable(target).to(self.device)
 
 
                 #Zero Gradients for each batch
@@ -69,11 +69,10 @@ class ModelTrainer():
                 loss = self.loss_function(result, target)
                 loss.backward()
                 self.optimizer.step()
-                import pdb; pdb.set_trace()
 
                 #Calculate predicted output
                 value, index = torch.max(result.data, 1)
-                for i in range(0, 5):
+                for i in range(0, 3):
                     if index[i] == target.data[i]:
                         num_correct += 1
 

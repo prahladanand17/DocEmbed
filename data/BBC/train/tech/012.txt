@@ -1,6 +1,6 @@
 IBM puts cash behind Linux push
 
-IBM is spending $100m (£52m) over the next three years beefing up its commitment to Linux software.
+IBM is spending $100m ($52m) over the next three years beefing up its commitment to Linux software.
 
 The cash injection will be used to help its customers use Linux on every type of device from handheld computers and phones right up to powerful servers. IBM said the money will fund a variety of technical, research and marketing initiatives to boost Linux use. IBM said it had taken the step in response to greater customer demand for the open source software.
 
