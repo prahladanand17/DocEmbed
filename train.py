@@ -58,7 +58,7 @@ class ModelTrainer():
             for batch_idx, (data, target) in enumerate(self.train_dataloader):
 
                 #Detach LSTM hidden state from previous sequence
-                self.model.initial_states = self.model.initialize_states()
+                self.model.initial_states = self.model.initialize_states(len(data[1]))
 
                 #Wrap inputs and targets in Variable
                 data, target = (Variable(data)).to(self.device), (Variable(target)).to(self.device)

@@ -55,7 +55,7 @@ class LSTM(nn.Module):
                 assert len(emb) == 300
                 words[sp[0]] = np.array(emb, dtype=np.float32)
         return words
-    def initialize_states(self):
+    def initialize_states(self, bs):
         #initialize tuple of (h0,c0)
-        return (torch.zeros(self.doc_LSTM.num_layers, 5, self.hidden_size),
-                torch.zeros(self.doc_LSTM.num_layers, 5, self.hidden_size))
+        return (torch.zeros(self.doc_LSTM.num_layers, bs, self.hidden_size),
+                torch.zeros(self.doc_LSTM.num_layers, bs, self.hidden_size))
