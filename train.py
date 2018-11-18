@@ -69,6 +69,7 @@ class ModelTrainer():
                 loss = self.loss_function(result, target)
                 loss.backward()
                 self.optimizer.step()
+                import pdb; pdb.set_trace()
 
                 #Calculate predicted output
                 value, index = torch.max(result.data, 1)
