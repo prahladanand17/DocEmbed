@@ -35,7 +35,8 @@ class LSTM(nn.Module):
             nn.Dropout(p=0.5),
             nn.Linear(50,20)
         )
-        self.initial_states = self.initialize_states()
+        self.hidden_size = hidden_size
+        self.hidden_states = 0
 
     def forward(self, input):
         word_embeddings = self.word_embeddings(input)
@@ -57,5 +58,5 @@ class LSTM(nn.Module):
         return words
     def initialize_states(self, bs):
         #initialize tuple of (h0,c0)
-        return (torch.zeros(self.doc_LSTM.num_layers, bs, self.hidden_size),
-                torch.zeros(self.doc_LSTM.num_layers, bs, self.hidden_size))
+        return (torch.zeros(self.doc_LSTM.num_layers, bs, self.hidden_size, device="cuda:0"),
+                torch.zeros(self.doc_LSTM.num_layers, bs, self.hidden_size, device="cuda:0"))

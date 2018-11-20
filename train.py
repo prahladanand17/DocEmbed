@@ -47,7 +47,7 @@ class ModelTrainer():
         self.valid_dataloader = self.databunch.valid_dl
 
         self.epochs = 10
-        self.learning_rate = 0.01
+        self.learning_rate = 0.005
         self.optimizer = optim.Adam(self.model.parameters(), lr=self.learning_rate)
         self.loss_function = nn.CrossEntropyLoss()
 
@@ -75,7 +75,7 @@ class ModelTrainer():
 
                 #Calculate predicted output
                 value, index = torch.max(result.data, 1)
-                for i in range(0, 3):
+                for i in range(0, len(target.data)):
                     if index[i] == target.data[i]:
                         num_correct += 1
 
@@ -83,7 +83,7 @@ class ModelTrainer():
                 print ('Epoch: ' + str(e + 1) + "\t" + "Progress: " + str(((batch_idx + 1) * 5)) + " / " +  str(len(self.train_dataloader.dataset)) + "\t" + "Loss: " + str(loss.item()))
 
                 #Save model state for ease of access/training later
-                torch.save(self.model.state_dict(), args.model_state + "/checkpoint.pth.tar")
+                torch.save(self.model.state_dict(), args.save + "/checkpoint.pth.tar")
 
             print ("Total Correct:" + str(num_correct))
             print ("Accuracy: " + str(num_correct) + "/" + str(len(self.train_dataloader)))
