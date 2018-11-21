@@ -10,6 +10,8 @@ from data.build_dataset import build_dataset
 from fastai.text import *
 import os
 from models.LSTM import LSTM
+import matplotlib.pyplot as plt
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--data', type=str, help='path to csv file with data')
@@ -53,7 +55,10 @@ class ModelTrainer():
 
     def train(self):
         self.model.train()
+        losses = []
+        accuracies = []
         for e in range(self.epochs):
+            avg_loss = 0
             num_correct = 0
             for batch_idx, (data, target) in enumerate(self.train_dataloader):
 
@@ -70,6 +75,7 @@ class ModelTrainer():
                 #Forward, backward, and step of optimizer
                 result = self.model.forward(data)
                 loss = self.loss_function(result, target)
+                avg_loss += loss
                 loss.backward()
                 self.optimizer.step()
 
@@ -86,7 +92,31 @@ class ModelTrainer():
                 torch.save(self.model.state_dict(), args.save + "/checkpoint.pth.tar")
 
             print ("Total Correct:" + str(num_correct))
-            print ("Accuracy: " + str(num_correct) + "/" + str(len(self.train_dataloader)))
+            print ("Accuracy: " + str(num_correct/self.train_dataloader.dataset))
+
+            avg_loss = avg_loss/self.train_dataloader.dataset
+            losses.append(avg_loss)
+
+            accuracies.append(num_correct/self.train_dataloader.dataset)
+
+
+        #Plot loss
+        plt.xlabel('# of epochs')
+        plt.ylabel('Train Loss')
+        plt.title('Epochs vs. Loss')
+        plt.grid(True)
+        plt.plot(self.epochs, losses)
+        plt.savefig('loss_epoch.png')
+        plt.close()
+
+        #Plot Accuracy
+        plt.xlabel('# of epochs')
+        plt.ylabel('Accuracy')
+        plt.title('Epochs vs. Accuracy')
+        plt.grid(True)
+        plt.plot(self.epochs, accuracies)
+        plt.savefig('acc_epoch.png')
+        plt.close()
 
 
 
