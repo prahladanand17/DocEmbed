@@ -48,7 +48,7 @@ class ModelTrainer():
         self.train_dataloader = self.databunch.train_dl
         self.valid_dataloader = self.databunch.valid_dl
 
-        self.epochs = 10
+        self.epochs = 20
         self.learning_rate = 0.005
         self.optimizer = optim.Adam(self.model.parameters(), lr=self.learning_rate)
         self.loss_function = nn.CrossEntropyLoss()
@@ -56,9 +56,11 @@ class ModelTrainer():
     def train(self):
         self.model.train()
         losses = []
+        epochs = []
         accuracies = []
         for e in range(self.epochs):
             avg_loss = 0
+            epochs.append(e)
             num_correct = 0
             for batch_idx, (data, target) in enumerate(self.train_dataloader):
 
@@ -92,12 +94,12 @@ class ModelTrainer():
                 torch.save(self.model.state_dict(), args.save + "/checkpoint.pth.tar")
 
             print ("Total Correct:" + str(num_correct))
-            print ("Accuracy: " + str(num_correct/self.train_dataloader.dataset))
+            print ("Accuracy: " + str(num_correct/len(self.train_dataloader.dataset)))
 
-            avg_loss = avg_loss/self.train_dataloader.dataset
+            avg_loss = avg_loss/len(self.train_dataloader.dataset)
             losses.append(avg_loss)
 
-            accuracies.append(num_correct/self.train_dataloader.dataset)
+            accuracies.append(num_correct/len(self.train_dataloader.dataset))
 
 
         #Plot loss
@@ -105,8 +107,8 @@ class ModelTrainer():
         plt.ylabel('Train Loss')
         plt.title('Epochs vs. Loss')
         plt.grid(True)
-        plt.plot(self.epochs, losses)
-        plt.savefig('loss_epoch.png')
+        plt.plot(epochs, losses)
+        plt.savefig('BBC_LSTM_loss_epoch.png')
         plt.close()
 
         #Plot Accuracy
@@ -114,8 +116,8 @@ class ModelTrainer():
         plt.ylabel('Accuracy')
         plt.title('Epochs vs. Accuracy')
         plt.grid(True)
-        plt.plot(self.epochs, accuracies)
-        plt.savefig('acc_epoch.png')
+        plt.plot(epochs, accuracies)
+        plt.savefig('BBC_LSTM_acc_epoch.png')
         plt.close()
 
 
