@@ -91,7 +91,7 @@ class ModelTrainer():
                 print ('Epoch: ' + str(e + 1) + "\t" + "Progress: " + str(((batch_idx + 1) * 5)) + " / " +  str(len(self.train_dataloader.dataset)) + "\t" + "Loss: " + str(loss.item()))
 
                 #Save model state for ease of access/training later
-                torch.save(self.model.state_dict(), args.save + "/checkpoint.pth.tar")
+                torch.save(self.model.state_dict(), args.save)
 
             print ("Total Correct:" + str(num_correct))
             print ("Accuracy: " + str(num_correct/len(self.train_dataloader.dataset)))
@@ -120,9 +120,54 @@ class ModelTrainer():
         plt.savefig('BBC_LSTM_acc_epoch.png')
         plt.close()
 
+    def validation(self):
+        self.model.load_state_dict(torch.load(args.save))
+        self.model.eval()
+
+        losses = []
+        accuracies = []
+        for e in range(self.epochs):
+            avg_loss = 0
+            num_correct = 0
+            for (data, target) in enumerate(self.valid_dataloader):
+
+                #Detach LSTM hidden state from previous sequence
+                self.model.initial_states = self.model.initialize_states(len(data[1]))
+
+                #Wrap inputs and targets in Variable
+                data, target = (Variable(data)).to(self.device), (Variable(target)).to(self.device)
+
+                #Forward, backward, and step of optimizer
+                result = self.model.forward(data)
+                loss = self.loss_function(result, target)
+                avg_loss += loss
+
+                #Calculate predicted output
+                value, index = torch.max(result.data, 1)
+                for i in range(0, len(target.data)):
+                    if index[i] == target.data[i]:
+                        num_correct += 1
+
+                #Print model statistics
+                print ('Epoch: ' + str(e + 1) + "\t" + "Progress: " + str(((batch_idx + 1))) + " / " +  str(len(self.valid_dataloader.dataset)) + "\t" + "Loss: " + str(loss.item()))
+
+            print ("Total Correct:" + str(num_correct))
+            print ("Accuracy: " + str(num_correct/len(self.valid_dataloader.dataset)))
+
+            avg_loss = avg_loss/len(self.valid_dataloader.dataset)
+            losses.append(avg_loss)
+
+            accuracies.append(num_correct/len(self.valid_dataloader.dataset))
+
+        print ("Max Accuracy: " + str(max(accuracies)))
+        print ("Min Loss: " + str(min(accuracies)))
+
+
+
 
 
 
 if __name__ == "__main__":
      LSTM = ModelTrainer()
-     LSTM.train()
+     #LSTM.train()
+     LSTM.validation()
