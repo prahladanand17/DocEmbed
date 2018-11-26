@@ -24,7 +24,7 @@ args = parser.parse_args()
 class ModelTrainer():
     def __init__(self):
         #Build dataloaders, vocabulary, and numericalize texts
-        self.databunch = TextClasDataBunch.from_csv(args.data, bs = 10, csv_name='train.csv')
+        self.databunch = TextClasDataBunch.from_csv(args.data, bs = 10, csv_name='data.csv')
 
 
         '''
@@ -129,10 +129,10 @@ class ModelTrainer():
         for e in range(self.epochs):
             avg_loss = 0
             num_correct = 0
-            for (data, target) in enumerate(self.valid_dataloader):
+            for data, target in enumerate(self.valid_dataloader):
 
                 #Detach LSTM hidden state from previous sequence
-                self.model.initial_states = self.model.initialize_states(len(data[1]))
+                self.model.initial_states = self.model.initialize_states(1)
 
                 #Wrap inputs and targets in Variable
                 data, target = (Variable(data)).to(self.device), (Variable(target)).to(self.device)

@@ -14,14 +14,14 @@ def build_dataset(source_dir):
     texts,labels = [],[]
     label_to_idx = {}
     idx_to_label = {}
-    i = 0
     for s in splits:
         categories = os.listdir(source_dir + '/' + s)
+        i = 0
         for c in categories:
             print (i)
             label_to_idx[c] = i
             idx_to_label[i] = c
-            folder_path = source_dir + '/' + c
+            folder_path = source_dir + '/' + s + '/' + c
             files = os.listdir(folder_path)
             for f in files:
                 filepath = Path(folder_path + '/' + f)
@@ -31,7 +31,7 @@ def build_dataset(source_dir):
             i += 1
     texts,labels = np.array(texts),np.array(labels)
     df = pd.DataFrame({'text':texts, 'labels':labels}, columns=['labels','text'])
-    df.to_csv(path_or_buf='/Users/anprahlad/Developer/DL_F2018/DocEmbed/data/BBC/data.csv', index=False, header=False)
+    df.to_csv(path_or_buf='/homes/anand39/DocEmbed/data/BBC/data.csv', index=False, header=False)
 
 
 if __name__ == "__main__":
