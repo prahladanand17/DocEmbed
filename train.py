@@ -6,6 +6,7 @@ from pathlib import Path
 from fastai.text import *
 import torch.optim as optim
 from models.LSTM import LSTM
+from models.GloVe_embed import Word_Vector_Model
 import matplotlib.pyplot as plt
 import torch.nn.functional as F
 from torch.autograd import Variable
@@ -13,9 +14,12 @@ from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 
 
 parser = argparse.ArgumentParser()
+
+parser.add_argument('--model', type='str', help='type of model we are training')
 parser.add_argument('--data', type=str, help='path to csv file with data')
 parser.add_argument('--embedding', type=str, help='path to gloVe file with pretrained embeddings')
 parser.add_argument('--save', type=str, help='path to director with saved model states')
+
 args = parser.parse_args()
 
 
@@ -23,8 +27,7 @@ args = parser.parse_args()
 class ModelTrainer():
     def __init__(self):
         #Build dataloaders, vocabulary, and numericalize texts
-        self.databunch = TextClasDataBunch.from_csv(args.data, bs = 10, csv_name='data.csv', pad_first=False, pad_idx = -1)
-
+        self.databunch = TextClasDataBunch.from_csv(args.data, bs = 10, csv_name='data.csv', pad_first=True, pad_idx = 1)
 
         '''
         Build word_to_idx and idx_to_word dictionaries
@@ -39,7 +42,12 @@ class ModelTrainer():
         idx_to_word = self.databunch.vocab.itos
         word_to_idx = build_word_to_idx(idx_to_word)
 
-        self.model = LSTM(vocab_size = len(idx_to_word), embedding_dim = 300, hidden_size = 300, word_to_idx = word_to_idx, glove_path = args.embedding)
+        models = {}
+
+        models['LSTM'] = LSTM(vocab_size = len(idx_to_word), embedding_dim = 300, hidden_size = 300, word_to_idx = word_to_idx, glove_path = args.embedding)
+        models['GloVe'] = Word_Vector_Model(vocab_size = len(idx_to_word), embedding_dim = 300, word_to_idx = word_to_idx, glove_path = args.embedding)
+
+        self.model = models[args.model]
         #self.model = nn.DataParallel(self.model)
         self.device = torch.device("cuda:0")
         self.model.to(self.device)
@@ -63,8 +71,11 @@ class ModelTrainer():
             num_correct = 0
             for batch_idx, (data, target) in enumerate(self.train_dataloader):
 
-                #Detach LSTM hidden state from previous sequence
-                self.model.initial_states = self.model.initialize_states(len(data[1]))
+                #Detach LSTM hidden state from previous sequence if LSTM
+                if(args.model = 'LSTM'):
+                    self.model.initial_states = self.model.initialize_states(len(data[1]))
+                else:
+                    pass
 
                 #Wrap inputs and targets in Variable
                 data, target = (Variable(data)).to(self.device), (Variable(target)).to(self.device)
