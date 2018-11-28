@@ -1,12 +1,12 @@
+import os
 import torch
+import numpy as np
 import torch.nn as nn
-import torch.nn.functional as F
+from fastai.text import *
 import torch.optim as optim
+import torch.nn.functional as F
 from torch.autograd import Variable
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
-import os
-import numpy as np
-from fastai.text import *
 
 
 class LSTM(nn.Module):

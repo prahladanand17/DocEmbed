@@ -1,16 +1,15 @@
+import os
 import torch
 import argparse
 import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-from torch.autograd import Variable
-from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 from pathlib import Path
-from data.build_dataset import build_dataset
 from fastai.text import *
-import os
+import torch.optim as optim
 from models.LSTM import LSTM
 import matplotlib.pyplot as plt
+import torch.nn.functional as F
+from torch.autograd import Variable
+from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 
 
 parser = argparse.ArgumentParser()
@@ -24,7 +23,7 @@ args = parser.parse_args()
 class ModelTrainer():
     def __init__(self):
         #Build dataloaders, vocabulary, and numericalize texts
-        self.databunch = TextClasDataBunch.from_csv(args.data, bs = 10, csv_name='data.csv')
+        self.databunch = TextClasDataBunch.from_csv(args.data, bs = 10, csv_name='data.csv', pad_first=False, pad_idx = -1)
 
 
         '''

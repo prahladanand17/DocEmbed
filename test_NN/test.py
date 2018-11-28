@@ -65,8 +65,9 @@ def replace_numbers(words):
     return new_words
 
 def new_test():
-    for i in range(0,5):
-        import pdb; pdb.set_trace()
+    pad_idx = 1
+    import pdb; pdb.set_trace()
+    tensor = torch.zeros(10, 50).long() + pad_idx
 
 
 def normalize(words):
