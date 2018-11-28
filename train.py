@@ -72,7 +72,7 @@ class ModelTrainer():
             for batch_idx, (data, target) in enumerate(self.train_dataloader):
 
                 #Detach LSTM hidden state from previous sequence if LSTM
-                if(args.model = 'LSTM'):
+                if(args.model == 'LSTM'):
                     self.model.initial_states = self.model.initialize_states(len(data[1]))
                 else:
                     pass
@@ -178,6 +178,6 @@ class ModelTrainer():
 
 
 if __name__ == "__main__":
-     LSTM = ModelTrainer()
-     #LSTM.train()
-     LSTM.validation()
+     model = ModelTrainer()
+     model.train()
+     model.validation()
