@@ -118,7 +118,10 @@ class ModelTrainer():
         plt.title('Epochs vs. Loss')
         plt.grid(True)
         plt.plot(epochs, losses)
-        plt.savefig('BBC_LSTM_loss_epoch.png')
+        if args.model == 'LSTM':
+            plt.savefig('BBC_LSTM_loss_epoch.png')
+        else:
+            plt.savefig('BBC_avgembed_loss_epoch.png')
         plt.close()
 
         #Plot Accuracy
@@ -127,7 +130,10 @@ class ModelTrainer():
         plt.title('Epochs vs. Accuracy')
         plt.grid(True)
         plt.plot(epochs, accuracies)
-        plt.savefig('BBC_LSTM_acc_epoch.png')
+        if args.model == 'LSTM':
+            plt.savefig('BBC_LSTM_acc_epoch.png')
+        else:
+            plt.savefig('BBC_avgembed_acc_epoch.png')
         plt.close()
 
     def validation(self):
