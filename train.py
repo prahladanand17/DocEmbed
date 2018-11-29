@@ -15,7 +15,7 @@ from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--model', type='str', help='type of model we are training')
+parser.add_argument('--model', type=str, help='type of model we are training')
 parser.add_argument('--data', type=str, help='path to csv file with data')
 parser.add_argument('--embedding', type=str, help='path to gloVe file with pretrained embeddings')
 parser.add_argument('--save', type=str, help='path to director with saved model states')

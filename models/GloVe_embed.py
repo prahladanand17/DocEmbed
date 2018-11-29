@@ -10,7 +10,7 @@ from torch.autograd import Variable
 
 class Word_Vector_Model(nn.Module):
     def __init__(self, vocab_size, embedding_dim, word_to_idx, glove_path):
-        super(LSTM,self).__init__()
+        super(Word_Vector_Model,self).__init__()
         #load pretrained gloVe embeddings
 
         word_embeds = self.load_glove(glove_path)
@@ -25,7 +25,7 @@ class Word_Vector_Model(nn.Module):
         self.word_embeddings.weight.data.copy_((embeddings))
         self.word_embeddings.weight.requires_grad=False
         self.classifier = nn.Sequential(
-            nn.Linear(hidden_size, 100),
+            nn.Linear(embedding_dim, 100),
             nn.ReLU(),
             nn.Dropout(p=0.5),
             nn.Linear(100,50),
