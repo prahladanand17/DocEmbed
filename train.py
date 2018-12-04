@@ -47,7 +47,7 @@ class ModelTrainer():
 
         models['LSTM'] = LSTM(vocab_size = len(idx_to_word), embedding_dim = 300, hidden_size = 300, word_to_idx = word_to_idx, glove_path = args.embedding)
         models['GloVe'] = Word_Vector_Model(vocab_size = len(idx_to_word), embedding_dim = 300, word_to_idx = word_to_idx, glove_path = args.embedding)
-        models['GRU'] = GRU(vocab_size=len(idx_to_word), embedding_dim = 300, word_to_idx = word_to_idx, glove_path = args.embedding)
+        models['GRU'] = GRU(vocab_size=len(idx_to_word), embedding_dim = 300, hidden_size = 300, word_to_idx = word_to_idx, glove_path = args.embedding)
 
         self.model = models[args.model]
         #self.model = nn.DataParallel(self.model)
@@ -58,7 +58,7 @@ class ModelTrainer():
         self.valid_dataloader = self.databunch.valid_dl
 
         self.epochs = 20
-        self.learning_rate = 0.005
+        self.learning_rate = 0.0001
         self.optimizer = optim.Adam(self.model.parameters(), lr=self.learning_rate)
         self.loss_function = nn.CrossEntropyLoss()
 
@@ -77,7 +77,7 @@ class ModelTrainer():
                 if (args.model == 'GloVe'):
                     pass
                 else:
-                    self.model.initial_states = self.model.initalize_states(len(data[1]))
+                    self.model.initial_states = self.model.initialize_states(len(data[1]))
 
                 #Wrap inputs and targets in Variable
                 data, target = (Variable(data)).to(self.device), (Variable(target)).to(self.device)
@@ -154,10 +154,10 @@ class ModelTrainer():
             for data, target in enumerate(self.valid_dataloader):
 
                 #Detach LSTM hidden state from previous sequence
-                    if(args.model == 'GloVe'):
-                        pass
-                    else:
-                        self.model.initial_states = self.model.initialize_states(len(data[1]))
+                if(args.model == 'GloVe'):
+                    pass
+                else:
+                    self.model.initial_states = self.model.initialize_states(len(data[1]))
                 #Wrap inputs and targets in Variable
                 data, target = (Variable(data)).to(self.device), (Variable(target)).to(self.device)
 
