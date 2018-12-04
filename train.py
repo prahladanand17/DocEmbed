@@ -5,6 +5,7 @@ import torch.nn as nn
 from pathlib import Path
 from fastai.text import *
 import torch.optim as optim
+from models.GRU import GRU
 from models.LSTM import LSTM
 from models.GloVe_embed import Word_Vector_Model
 import matplotlib.pyplot as plt
@@ -46,6 +47,7 @@ class ModelTrainer():
 
         models['LSTM'] = LSTM(vocab_size = len(idx_to_word), embedding_dim = 300, hidden_size = 300, word_to_idx = word_to_idx, glove_path = args.embedding)
         models['GloVe'] = Word_Vector_Model(vocab_size = len(idx_to_word), embedding_dim = 300, word_to_idx = word_to_idx, glove_path = args.embedding)
+        models['GRU'] = GRU(vocab_size=len(idx_to_word), embedding_dim = 300, word_to_idx = word_to_idx, glove_path = args.embedding)
 
         self.model = models[args.model]
         #self.model = nn.DataParallel(self.model)
@@ -72,10 +74,10 @@ class ModelTrainer():
             for batch_idx, (data, target) in enumerate(self.train_dataloader):
 
                 #Detach LSTM hidden state from previous sequence if LSTM
-                if(args.model == 'LSTM'):
-                    self.model.initial_states = self.model.initialize_states(len(data[1]))
-                else:
+                if (args.model == 'GloVe'):
                     pass
+                else:
+                    self.model.initial_states = self.model.initalize_states(len(data[1]))
 
                 #Wrap inputs and targets in Variable
                 data, target = (Variable(data)).to(self.device), (Variable(target)).to(self.device)
@@ -120,8 +122,10 @@ class ModelTrainer():
         plt.plot(epochs, losses)
         if args.model == 'LSTM':
             plt.savefig('BBC_LSTM_loss_epoch.png')
-        else:
+        elif args.model == 'GloVe':
             plt.savefig('BBC_avgembed_loss_epoch.png')
+        else:
+            plt.savefig('BBC_GRU_loss_epoch')
         plt.close()
 
         #Plot Accuracy
@@ -132,6 +136,8 @@ class ModelTrainer():
         plt.plot(epochs, accuracies)
         if args.model == 'LSTM':
             plt.savefig('BBC_LSTM_acc_epoch.png')
+        elif args.model == 'GRU':
+            plt.savefig('BBC_GRU_acc_epoch.png')
         else:
             plt.savefig('BBC_avgembed_acc_epoch.png')
         plt.close()
@@ -148,8 +154,10 @@ class ModelTrainer():
             for data, target in enumerate(self.valid_dataloader):
 
                 #Detach LSTM hidden state from previous sequence
-                self.model.initial_states = self.model.initialize_states(1)
-
+                    if(args.model == 'GloVe'):
+                        pass
+                    else:
+                        self.model.initial_states = self.model.initialize_states(len(data[1]))
                 #Wrap inputs and targets in Variable
                 data, target = (Variable(data)).to(self.device), (Variable(target)).to(self.device)
 
