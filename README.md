@@ -4,11 +4,11 @@ Final Project for BME 595 (Deep Learning)
 # Team Members
 Prahlad Anand
 
-#Goals
+# Goals
 Create rich document representations through supervised learning methods
 
-#Challenges
+# Challenges
 Pre-processing data and training time
 
-#Restrictions
+# Restrictions
 N/A
