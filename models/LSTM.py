@@ -36,7 +36,7 @@ class LSTM(nn.Module):
             nn.Linear(50,20)
         )
         self.hidden_size = hidden_size
-        self.hidden_states = 0
+        self.initial_states = 0
 
     def forward(self, input):
         word_embeddings = self.word_embeddings(input)
