@@ -33,6 +33,6 @@ torch-nightly==1.0.0.dev20181105
 torchvision-nightly==0.2.1
 tqdm==4.28.1
 typing==3.6.6
-ujson==1.35
+ujson==5.2.0
 urllib3==1.24.2
 wrapt==1.10.11
